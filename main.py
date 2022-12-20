@@ -2,42 +2,38 @@
 Where the bot execution starts & contains the game loop that keeps the bot running indefinitely
 """
 
-from ui import UI
 from game import Game
 import multiprocessing
-import auto_queue
 import settings
 import inquirer
 
 
 def select_tools() -> str:
     """Select tool to action"""
-    list_tools = ['Auto buy champs', 'Bot farm', 'xyz']
+    list_tools = ['Auto buy champs', 'abc', 'xyz']
     tools = {inquirer.Checkbox(
         'list_tool', message='Choose just ONE tool you need', choices=list_tools)}
     result = inquirer.prompt(tools).get('list_tool')
     return result[0]
 
 
-def game_loop(ui_queue: multiprocessing.Queue) -> None:
-    """Keeps the program running indefinetly by calling queue and game start in a loop"""
+def game_loop() -> None:
+    """Keeps the program running in a loop"""
     tool = select_tools()
-    print(f'tool: {tool}')
+    print(f'Tool: {tool}')
     while True:
-        if tool == 'Bot farm':
-            auto_queue.queue()
-        Game(ui_queue, tool)
+        Game(tool)
 
 
-if __name__ == "__main__":
+def check_path() -> None:
+    """Check path of LOL client"""
     if settings.LEAGUE_CLIENT_PATH is None:
         raise Exception(
             "No league client path specified. Please set the path in settings.py")
-    message_queue = multiprocessing.Queue()
-    overlay: UI = UI(message_queue)
-    game_thread = multiprocessing.Process(
-        target=game_loop, args=(message_queue,))
 
+
+if __name__ == "__main__":
+    """Main function"""
     print("Close this window to terminate the overlay window & program")
+    game_thread = multiprocessing.Process(target=game_loop)
     game_thread.start()
-    overlay.ui_loop()
