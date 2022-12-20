@@ -14,7 +14,8 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 def create_lobby(client_info: tuple) -> bool:
     """Creates a lobby"""
-    payload: dict[str, int] = {"queueId": 1090}  # Ranked TFT is 1100
+    payload: dict[str, int] = {
+        "queueId": 1090}  # Ranked TFT: 1100; Unranked TFT: 1090
     payload: dict[str, int] = json.dumps(payload)
     try:
         status = requests.post(client_info[1] + "/lol-lobby/v2/lobby/", payload,

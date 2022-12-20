@@ -12,15 +12,18 @@ import comps
 import ocr
 import game_functions
 import arena_functions
+import json
 
 
 class Arena:
     """Arena class that handles game logic such as board and bench state"""
     # pylint: disable=too-many-instance-attributes,too-many-public-methods
+
     def __init__(self, message_queue) -> None:
         self.message_queue = message_queue
         self.board_size = 0
-        self.bench: list[None] = [None, None, None, None, None, None, None, None, None]
+        self.bench: list[None] = [None, None, None,
+                                  None, None, None, None, None, None]
         self.board: list = []
         self.board_unknown: list = []
         self.unknown_slots: list = comps.get_unknown_slots()
@@ -66,7 +69,8 @@ class Arena:
     def move_known(self, champion: Champion) -> None:
         """Moves champion to the board"""
         print(f"  Moving {champion.name} to board")
-        destination: tuple = screen_coords.BOARD_LOC[comps.COMP[champion.name]["board_position"]].get_coords()
+        destination: tuple = screen_coords.BOARD_LOC[comps.COMP[champion.name]["board_position"]].get_coords(
+        )
         mk_functions.left_click(champion.coords)
         mk_functions.left_click(destination)
         champion.coords = destination
@@ -127,7 +131,8 @@ class Arena:
 
                     if valid_champ:
                         none_slot: int = arena_functions.empty_slot()
-                        mk_functions.left_click(screen_coords.BUY_LOC[champion[0]].get_coords())
+                        mk_functions.left_click(
+                            screen_coords.BUY_LOC[champion[0]].get_coords())
                         sleep(0.2)
                         self.bench[none_slot] = f"{champion[1]}"
                         self.move_unknown()
@@ -263,7 +268,7 @@ class Arena:
         mk_functions.move_mouse(screen_coords.ITEM_POS[0][0].get_coords())
         sleep(2)
         item: str = ocr.get_text(screenxy=screen_coords.ITEM_POS[0][1].get_coords(), scale=3, psm=13,
-                            whitelist=ocr.ALPHABET_WHITELIST)
+                                 whitelist=ocr.ALPHABET_WHITELIST)
         item: str = arena_functions.valid_item(item)
         try:
             if "TacticiansCrown" in item:
@@ -289,18 +294,21 @@ class Arena:
             print(f"  Shop: {shop}")
             for champion in shop:
                 if (champion[1] in self.champs_to_buy and
-                    arena_functions.get_gold() - game_assets.CHAMPIONS[champion[1]]["Gold"] >= 0
-                 ):
+                        arena_functions.get_gold() -
+                        game_assets.CHAMPIONS[champion[1]]["Gold"] >= 0
+                        ):
                     none_slot: int = arena_functions.empty_slot()
                     if none_slot != -1:
-                        mk_functions.left_click(screen_coords.BUY_LOC[champion[0]].get_coords())
+                        mk_functions.left_click(
+                            screen_coords.BUY_LOC[champion[0]].get_coords())
                         print(f"    Purchased {champion[1]}")
                         self.bought_champion(champion[1], none_slot)
                         self.champs_to_buy.remove(champion[1])
                     else:
-                        #Try to buy champ 3 when bench is full
+                        # Try to buy champ 3 when bench is full
                         print(f"  Board is full but want {champion[1]}")
-                        mk_functions.left_click(screen_coords.BUY_LOC[champion[0]].get_coords())
+                        mk_functions.left_click(
+                            screen_coords.BUY_LOC[champion[0]].get_coords())
                         game_functions.default_pos()
                         sleep(0.5)
                         self.fix_bench_state()
@@ -310,6 +318,18 @@ class Arena:
                             print(f"    Purchased {champion[1]}")
                             self.champs_to_buy.remove(champion[1])
             first_run = False
+
+    def auto_buy_champs(self) -> None:
+        """auto buy selected champs in shop"""
+        while True:
+            shop: list = arena_functions.get_shop()
+            with open('D:\\dam coding\\TFT-TOOLS\\auto_buy_champs.json', 'r') as file:
+                data = json.load(file)
+            for champion in shop:
+                if (champion[1] in data['AUTO_BUY_CHAMPS'] and arena_functions.get_gold() -
+                        game_assets.CHAMPIONS[champion[1]]["Gold"] >= 0):
+                    mk_functions.left_click(
+                        screen_coords.BUY_LOC[champion[0]].get_coords())
 
     def krug_round(self) -> None:
         """Checks if current round is krug round"""
@@ -328,7 +348,8 @@ class Arena:
             for potential in comps.AUGMENTS:
                 if potential in augment:
                     print(f"  Choosing augment {augment}")
-                    mk_functions.left_click(screen_coords.AUGMENT_LOC[augments.index(augment)].get_coords())
+                    mk_functions.left_click(
+                        screen_coords.AUGMENT_LOC[augments.index(augment)].get_coords())
                     return
         print("  [!] No priority or backup augment found, undefined behavior may occur for the rest of the round")
         mk_functions.left_click(screen_coords.AUGMENT_LOC[0].get_coords())

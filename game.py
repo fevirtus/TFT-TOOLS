@@ -3,27 +3,30 @@ Handles tasks that happen each game round
 """
 
 from time import sleep, perf_counter
+from arena import Arena
+from vec4 import Vec4
+from vec2 import Vec2
 import random
 import multiprocessing
 import win32gui
 import settings
 import game_assets
 import game_functions
-from arena import Arena
-from vec4 import Vec4
-from vec2 import Vec2
+import json
 
 
 class Game:
     """Game class that handles game logic such as round tasks"""
 
-    def __init__(self, message_queue: multiprocessing.Queue) -> None:
+    def __init__(self, message_queue: multiprocessing.Queue, tool: str) -> None:
         self.message_queue = message_queue
         self.arena = Arena(self.message_queue)
         self.round = "0-0"
         self.time: None = None
-        self.forfeit_time: int = settings.FORFEIT_TIME + random.randint(50, 150)
+        self.forfeit_time: int = settings.FORFEIT_TIME + \
+            random.randint(50, 150)
         self.found_window = False
+        self.tool = tool
 
         print("\n[!] Searching for game window")
         while not self.found_window:
@@ -33,7 +36,7 @@ class Game:
 
         self.loading_screen()
 
-    def callback(self, hwnd, extra) -> None: # pylint: disable=unused-argument
+    def callback(self, hwnd, extra) -> None:  # pylint: disable=unused-argument
         """Function used to find the game window and get its size"""
         if "League of Legends (TM) Client" not in win32gui.GetWindowText(hwnd):
             return
@@ -61,7 +64,20 @@ class Game:
         while game_functions.get_round() != "1-1":
             sleep(1)
         self.start_time: float = perf_counter()
-        self.game_loop()
+        if self.tool == 'Bot farm':
+            self.game_loop()
+        elif self.tool == 'Auto buy champs':
+            self.auto_buy_champs_tool()
+
+    def auto_buy_champs_tool(self) -> None:
+        """This tool loop every round and buy selected champs"""
+        while game_functions.check_alive():
+            with open('D:\\dam coding\\TFT-TOOLS\\auto_buy_champs.json', 'r') as file:
+                data = json.load(file)
+            print(f"\n{self.round}")
+            print(f"List champions auto buy: {data['AUTO_BUY_CHAMPS']}")
+            self.message_queue.put("CLEAR")
+            self.arena.auto_buy_champs()
 
     def game_loop(self) -> None:
         """Loop that runs while the game is active, handles calling the correct tasks for round and exiting game"""

@@ -54,7 +54,7 @@ CHAMPIONS: dict[str, dict[str, int]] = {
     "Annie": {"Gold": 2, "Board Size": 1},
     "Aphelios": {"Gold": 5, "Board Size": 1},
     "Ashe": {"Gold": 1, "Board Size": 1},
-    "AurelionSol": {"Gold": 4, "Board Size":1},
+    "AurelionSol": {"Gold": 4, "Board Size": 1},
     "Belveth": {"Gold": 4, "Board Size": 1},
     "Blitzcrank": {"Gold": 1, "Board Size": 1},
     "Camille": {"Gold": 2, "Board Size": 1},
@@ -120,7 +120,8 @@ ROUNDS: set[str] = {"1-1", "1-2", "1-3", "1-4",
 
 CAROUSEL_ROUND: set[str] = {"1-1", "2-4", "3-4", "4-4", "5-4", "6-4", "7-4"}
 
-PVE_ROUND: set[str] = {"1-2", "1-3", "1-4", "2-7", "3-7", "4-7", "5-7", "6-7", "7-7"}
+PVE_ROUND: set[str] = {"1-2", "1-3", "1-4",
+                       "2-7", "3-7", "4-7", "5-7", "6-7", "7-7"}
 
 PVP_ROUND: set[str] = {"2-1", "2-2", "2-3", "2-5", "2-6",
                        "3-1", "3-2", "3-3", "3-5", "3-6",

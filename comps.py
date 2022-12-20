@@ -5,49 +5,49 @@ Items are in camel case and a-Z
 """
 
 COMP = {
-    "Ezreal": {
+    "Lux": {
         "board_position": 0,
         "items": [],
         "level": 2,
         "final_comp": True
     },
-    "Twitch": {
+    "Annie": {
         "board_position": 1,
-        "items": ["InfinityEdge", "LastWhisper", "RunaansHurricane"],
+        "items": ["IonicSpark", "GargoyleStoneplate", "WarmogsArmor"],
         "level": 2,
         "final_comp": True,
     },
-    "Xayah": {
+    "Yuumi": {
         "board_position": 5,
-        "items": ["GiantSlayer", "GuinsoosRageblade", "Quicksilver"],
+        "items": [],
         "level": 2,
         "final_comp": True,
     },
-    "Varus": {
+    "Alistar": {
         "board_position": 6,
-        "items": ["Deathblade", "GuinsoosRageblade", "RunaansHurricane"],
-        "level": 3,
-        "final_comp": True,
-    },
-    "Ornn": {
-        "board_position": 23,
-        "items": ["GiantSlayer", "GuinsoosRageblade", "InfinityEdge"],
-        "level": 3,
-        "final_comp": True,
-    },
-    "Shen": {
-        "board_position": 24,
         "items": [],
+        "level": 3,
+        "final_comp": True,
+    },
+    "Ekko": {
+        "board_position": 23,
+        "items": [],
+        "level": 3,
+        "final_comp": True,
+    },
+    "Taliyah": {
+        "board_position": 24,
+        "items": ["HextechGunblade", "JeweledGauntlet", "SpearofShojin"],
         "level": 3,
         "final_comp": True
     },
-    "Illaoi": {
+    "Janna": {
         "board_position": 25,
-        "items": ["GargoyleStoneplate", "SunfireCape", "WarmogsArmor"],
+        "items": [],
         "level": 3,
         "final_comp": True,
     },
-    "Skarner": {"board_position": 26, "items": [], "level": 3, "final_comp": True},
+    "Syndra": {"board_position": 26, "items": [], "level": 3, "final_comp": True},
 }
 
 # No logic for certain augments meaning the bot won't know what to do if they are included in here
@@ -97,7 +97,8 @@ def champions_to_buy() -> list:
         elif champion_data["level"] == 3:
             champs_to_buy.extend([champion] * 9)
         else:
-            raise Exception("Comps.py | Champion level must be a valid level (1-3)")
+            raise Exception(
+                "Comps.py | Champion level must be a valid level (1-3)")
     return champs_to_buy
 
 
