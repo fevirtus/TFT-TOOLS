@@ -3,12 +3,12 @@ Handles tasks that happen each game round
 """
 
 from time import sleep
+import json
+import win32gui
+import game_functions
 from arena import Arena
 from vec4 import Vec4
 from vec2 import Vec2
-import win32gui
-import game_functions
-import json
 
 
 class Game:
