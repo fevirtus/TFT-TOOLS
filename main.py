@@ -3,6 +3,7 @@ Where the bot execution starts & contains the game loop that keeps the bot runni
 """
 
 from game import Game
+import app
 import multiprocessing
 import settings
 import inquirer
@@ -35,5 +36,8 @@ def check_path() -> None:
 if __name__ == "__main__":
     """Main function"""
     print("Close this window to terminate the overlay window & program")
+
     game_thread = multiprocessing.Process(target=game_loop)
     game_thread.start()
+
+    app.init()
