@@ -2,6 +2,7 @@
 Handles sending input to the game, coords contain a cartesian ordered pair (x, y)
 """
 
+import mouse
 import random
 import pydirectinput
 
@@ -9,9 +10,13 @@ import pydirectinput
 def left_click(coords: tuple) -> None:
     """Left clicks at argument ones coordinates"""
     offset: int = random.randint(-3, 3)
-    pydirectinput.moveTo(coords[0] - offset, coords[1] - offset)
-    pydirectinput.mouseDown()
-    pydirectinput.mouseUp()
+    # pydirectinput.moveTo(coords[0] - offset, coords[1] - offset)
+    # pydirectinput.mouseDown()
+    # pydirectinput.mouseUp()
+    mouse.move(coords[0] - offset, coords[1] - offset)
+    mouse.click()
+    # pydirectinput.click(coords[0] - offset, coords[1] - offset)
+    # sleep(0.1)
 
 
 def right_click(coords: tuple) -> None:
