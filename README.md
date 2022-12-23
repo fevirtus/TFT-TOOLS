@@ -1,8 +1,6 @@
 ## Lưu ý:
 - Tắt overlay.
-- Nếu dùng bot thì cần chuyển sang tiếng Anh.
 - Màn hình ingame chuyển về dạng không viền cửa sổ 16:9 (1920x1080).
-- If the program crashes, create an issue with the error.
 
 ## Sử dụng:
 1. Cài Python 3.10.6 tại https://www.python.org/downloads/windows/

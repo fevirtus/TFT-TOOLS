@@ -4,8 +4,10 @@ Handles tasks that happen each game round
 
 from time import sleep
 import json
+import os
 import win32gui
 import game_functions
+import settings
 from arena import Arena
 from vec4 import Vec4
 from vec2 import Vec2
@@ -51,8 +53,9 @@ class Game:
 
     def auto_buy_champs_tool(self) -> None:
         """This tool loop every round and buy selected champs"""
+        path = os.path.join(settings.ABSOLUTE_PATH, 'auto_buy_champs.json')
         while game_functions.check_alive():
-            with open('D:\\dam coding\\TFT-TOOLS\\auto_buy_champs.json', 'r') as file:
+            with open(path, 'r') as file:
                 data = json.load(file)
             print(f"List champions auto buy: {data['AUTO_BUY_CHAMPS']}")
             self.arena.auto_buy_champs()

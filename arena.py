@@ -4,10 +4,12 @@ other variables used by the bot to make decisions
 """
 
 import game_assets
+import settings
 import mk_functions
 import screen_coords
 import arena_functions
 import json
+import os
 
 
 class Arena:
@@ -18,9 +20,10 @@ class Arena:
 
     def auto_buy_champs(self) -> None:
         """auto buy selected champs in shop"""
+        path = os.path.join(settings.ABSOLUTE_PATH, 'auto_buy_champs.json')
         while True:
             shop: list = arena_functions.get_shop()
-            with open('D:\\dam coding\\TFT-TOOLS\\auto_buy_champs.json', 'r') as file:
+            with open(path, 'r') as file:
                 data = json.load(file)
             for champion in shop:
                 if (champion[1] in data['AUTO_BUY_CHAMPS'] and arena_functions.get_gold() -
